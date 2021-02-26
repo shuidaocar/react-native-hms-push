@@ -34,8 +34,9 @@ import {
   RepeatType,
   Visibility,
 } from "./src/LocalNotification";
+import { HmsPushEvent } from "./src/HmsPushEvent";
 
-Platform.OS === "android" &&
+if (Platform.OS === "android") {
   Object.assign(HmsLocalNotification, {
     Importance: { ...Importance },
     Priority: { ...Priority },
@@ -81,89 +82,88 @@ Platform.OS === "android" &&
     },
   });
 
-import { HmsPushEvent } from "./src/HmsPushEvent";
-
-HmsPushEvent.onRemoteMessageReceived = (result) => {
-  new NativeEventEmitter().addListener(
-    HmsPushEvent.REMOTE_DATA_MESSAGE_RECEIVED,
-    result
-  );
-  HmsPushMessaging.registerEvent(HmsPushEvent.REMOTE_DATA_MESSAGE_RECEIVED);
-}
-
-HmsPushEvent.onTokenReceived = (result) =>{
-  new NativeEventEmitter().addListener(
-    HmsPushEvent.TOKEN_RECEIVED_EVENT,
-    result
-  );
-  HmsPushMessaging.registerEvent(HmsPushEvent.TOKEN_RECEIVED_EVENT);
-}
-
-
-HmsPushEvent.onTokenError = (result) =>{
-  new NativeEventEmitter().addListener(
-    HmsPushEvent.ON_TOKEN_ERROR_EVENT,
-    result
-  );
-  HmsPushMessaging.registerEvent(HmsPushEvent.ON_TOKEN_ERROR_EVENT);
-}
-
-HmsPushEvent.onPushMessageSent = (result) => {
-  new NativeEventEmitter().addListener(
-    HmsPushEvent.ON_PUSH_MESSAGE_SENT,
-    result
-  );
-  HmsPushMessaging.registerEvent(HmsPushEvent.ON_PUSH_MESSAGE_SENT);
-}
-
-HmsPushEvent.onPushMessageSentError = (result) =>{
-  new NativeEventEmitter().addListener(
-    HmsPushEvent.ON_PUSH_MESSAGE_SENT_ERROR,
-    result
-  );
-  HmsPushMessaging.registerEvent(HmsPushEvent.ON_PUSH_MESSAGE_SENT_ERROR);
-}
-HmsPushEvent.onPushMessageSentDelivered = (result) =>{
-  new NativeEventEmitter().addListener(
-    HmsPushEvent.ON_PUSH_MESSAGE_SENT_DELIVERED,
-    result
-  );
-  HmsPushMessaging.registerEvent(HmsPushEvent.ON_PUSH_MESSAGE_SENT_DELIVERED);
-}
-
-HmsPushEvent.onLocalNotificationAction = (result) =>{
-  new NativeEventEmitter().addListener(
-    HmsPushEvent.LOCAL_NOTIFICATION_ACTION_EVENT,
-    result
-  );
-  HmsPushMessaging.registerEvent(HmsPushEvent.LOCAL_NOTIFICATION_ACTION_EVENT);
-}
-
-HmsPushEvent.onNotificationOpenedApp = (result) =>{
-  new NativeEventEmitter().addListener(
-    HmsPushEvent.NOTIFICATION_OPENED_EVENT,
-    result
-  );
-  HmsPushMessaging.registerEvent(HmsPushEvent.NOTIFICATION_OPENED_EVENT);
-}
-
-let backgroundMessageHandler;
-AppRegistry.registerHeadlessTask("HMSPushHeadlessTask", () => {
-  if (!backgroundMessageHandler) {
-    console.warn(
-      "There is not any handler method. Use 'setBackgroundMessageHandler' method."
+  HmsPushEvent.onRemoteMessageReceived = (result) => {
+    new NativeEventEmitter().addListener(
+      HmsPushEvent.REMOTE_DATA_MESSAGE_RECEIVED,
+      result
     );
-    return () => Promise.resolve();
+    HmsPushMessaging.registerEvent(HmsPushEvent.REMOTE_DATA_MESSAGE_RECEIVED);
   }
-  return (remoteMessage) => backgroundMessageHandler(remoteMessage);
-});
-HmsPushMessaging.setBackgroundMessageHandler = (handler) => {
-  if (handler && typeof handler !== "function") {
-    console.error("backgroundMessageHandler must be a function.");
+
+  HmsPushEvent.onTokenReceived = (result) => {
+    new NativeEventEmitter().addListener(
+      HmsPushEvent.TOKEN_RECEIVED_EVENT,
+      result
+    );
+    HmsPushMessaging.registerEvent(HmsPushEvent.TOKEN_RECEIVED_EVENT);
   }
-  backgroundMessageHandler = handler;
-  console.log("backgroundMessageHandler registered ✔");
-};
+
+
+  HmsPushEvent.onTokenError = (result) => {
+    new NativeEventEmitter().addListener(
+      HmsPushEvent.ON_TOKEN_ERROR_EVENT,
+      result
+    );
+    HmsPushMessaging.registerEvent(HmsPushEvent.ON_TOKEN_ERROR_EVENT);
+  }
+
+  HmsPushEvent.onPushMessageSent = (result) => {
+    new NativeEventEmitter().addListener(
+      HmsPushEvent.ON_PUSH_MESSAGE_SENT,
+      result
+    );
+    HmsPushMessaging.registerEvent(HmsPushEvent.ON_PUSH_MESSAGE_SENT);
+  }
+
+  HmsPushEvent.onPushMessageSentError = (result) => {
+    new NativeEventEmitter().addListener(
+      HmsPushEvent.ON_PUSH_MESSAGE_SENT_ERROR,
+      result
+    );
+    HmsPushMessaging.registerEvent(HmsPushEvent.ON_PUSH_MESSAGE_SENT_ERROR);
+  }
+  HmsPushEvent.onPushMessageSentDelivered = (result) => {
+    new NativeEventEmitter().addListener(
+      HmsPushEvent.ON_PUSH_MESSAGE_SENT_DELIVERED,
+      result
+    );
+    HmsPushMessaging.registerEvent(HmsPushEvent.ON_PUSH_MESSAGE_SENT_DELIVERED);
+  }
+
+  HmsPushEvent.onLocalNotificationAction = (result) => {
+    new NativeEventEmitter().addListener(
+      HmsPushEvent.LOCAL_NOTIFICATION_ACTION_EVENT,
+      result
+    );
+    HmsPushMessaging.registerEvent(HmsPushEvent.LOCAL_NOTIFICATION_ACTION_EVENT);
+  }
+
+  HmsPushEvent.onNotificationOpenedApp = (result) => {
+    new NativeEventEmitter().addListener(
+      HmsPushEvent.NOTIFICATION_OPENED_EVENT,
+      result
+    );
+    HmsPushMessaging.registerEvent(HmsPushEvent.NOTIFICATION_OPENED_EVENT);
+  }
+
+  let backgroundMessageHandler;
+  AppRegistry.registerHeadlessTask("HMSPushHeadlessTask", () => {
+    if (!backgroundMessageHandler) {
+      console.warn(
+        "There is not any handler method. Use 'setBackgroundMessageHandler' method."
+      );
+      return () => Promise.resolve();
+    }
+    return (remoteMessage) => backgroundMessageHandler(remoteMessage);
+  });
+  HmsPushMessaging.setBackgroundMessageHandler = (handler) => {
+    if (handler && typeof handler !== "function") {
+      console.error("backgroundMessageHandler must be a function.");
+    }
+    backgroundMessageHandler = handler;
+    console.log("backgroundMessageHandler registered ✔");
+  };
+}
 
 export { RNRemoteMessage } from "./src/RNRemoteMessage";
 export { HmsPushResultCode } from "./src/HmsPushResultCode";
