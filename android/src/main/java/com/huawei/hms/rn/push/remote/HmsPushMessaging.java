@@ -41,6 +41,7 @@ import com.huawei.hms.rn.push.utils.ResultUtils;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +50,7 @@ public class HmsPushMessaging extends ReactContextBaseJavaModule implements Acti
 
 
     private static volatile ReactApplicationContext context;
+    public static ArrayList<String> eventList = new ArrayList<String>();
     private static Map<String, Object> initialNotification = new HashMap<>();
 
     public HmsPushMessaging(ReactApplicationContext reactContext) {
@@ -93,6 +95,15 @@ public class HmsPushMessaging extends ReactContextBaseJavaModule implements Acti
 
     public static Map<String, Object> getInitialNotification() {
         return HmsPushMessaging.initialNotification;
+    }
+
+    public static boolean isEventRegistered(String eventName) {
+      return eventList.contains(eventName);
+    }
+
+    @ReactMethod
+    public void registerEvent(String eventName) {
+      eventList.add(eventName);
     }
 
     @ReactMethod
