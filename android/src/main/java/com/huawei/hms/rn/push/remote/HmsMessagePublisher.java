@@ -71,10 +71,16 @@ public class HmsMessagePublisher extends ReactContextBaseJavaModule {
     TimerTask task = new TimerTask() {
       @Override
       public void run() {
-        if(HmsMessagePublisher.isInit()) {
-          HmsPushMessaging.getContext()
-              .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-              .emit(event, params);
+        if(HmsMessagePublisher.isInit() && HmsPushMessaging.isEventRegistered(event)) {
+          Timer pushTimer = new Timer();
+          pushTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+              HmsPushMessaging.getContext()
+                  .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                  .emit(event, params);
+            }
+          }, 1000);
         }else{
           doPolling(event, params);
         }

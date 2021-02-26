@@ -83,53 +83,69 @@ Platform.OS === "android" &&
 
 import { HmsPushEvent } from "./src/HmsPushEvent";
 
-HmsPushEvent.onRemoteMessageReceived = (result) =>
+HmsPushEvent.onRemoteMessageReceived = (result) => {
   new NativeEventEmitter().addListener(
     HmsPushEvent.REMOTE_DATA_MESSAGE_RECEIVED,
     result
   );
+  HmsPushMessaging.registerEvent(HmsPushEvent.REMOTE_DATA_MESSAGE_RECEIVED);
+}
 
-HmsPushEvent.onTokenReceived = (result) =>
+HmsPushEvent.onTokenReceived = (result) =>{
   new NativeEventEmitter().addListener(
     HmsPushEvent.TOKEN_RECEIVED_EVENT,
     result
   );
+  HmsPushMessaging.registerEvent(HmsPushEvent.TOKEN_RECEIVED_EVENT);
+}
 
-HmsPushEvent.onTokenError = (result) =>
+
+HmsPushEvent.onTokenError = (result) =>{
   new NativeEventEmitter().addListener(
     HmsPushEvent.ON_TOKEN_ERROR_EVENT,
     result
   );
+  HmsPushMessaging.registerEvent(HmsPushEvent.ON_TOKEN_ERROR_EVENT);
+}
 
-HmsPushEvent.onPushMessageSent = (result) =>
+HmsPushEvent.onPushMessageSent = (result) => {
   new NativeEventEmitter().addListener(
     HmsPushEvent.ON_PUSH_MESSAGE_SENT,
     result
   );
+  HmsPushMessaging.registerEvent(HmsPushEvent.ON_PUSH_MESSAGE_SENT);
+}
 
-HmsPushEvent.onPushMessageSentError = (result) =>
+HmsPushEvent.onPushMessageSentError = (result) =>{
   new NativeEventEmitter().addListener(
     HmsPushEvent.ON_PUSH_MESSAGE_SENT_ERROR,
     result
   );
-
-HmsPushEvent.onPushMessageSentDelivered = (result) =>
+  HmsPushMessaging.registerEvent(HmsPushEvent.ON_PUSH_MESSAGE_SENT_ERROR);
+}
+HmsPushEvent.onPushMessageSentDelivered = (result) =>{
   new NativeEventEmitter().addListener(
     HmsPushEvent.ON_PUSH_MESSAGE_SENT_DELIVERED,
     result
   );
+  HmsPushMessaging.registerEvent(HmsPushEvent.ON_PUSH_MESSAGE_SENT_DELIVERED);
+}
 
-HmsPushEvent.onLocalNotificationAction = (result) =>
+HmsPushEvent.onLocalNotificationAction = (result) =>{
   new NativeEventEmitter().addListener(
     HmsPushEvent.LOCAL_NOTIFICATION_ACTION_EVENT,
     result
   );
+  HmsPushMessaging.registerEvent(HmsPushEvent.LOCAL_NOTIFICATION_ACTION_EVENT);
+}
 
-HmsPushEvent.onNotificationOpenedApp = (result) =>
+HmsPushEvent.onNotificationOpenedApp = (result) =>{
   new NativeEventEmitter().addListener(
     HmsPushEvent.NOTIFICATION_OPENED_EVENT,
     result
   );
+  HmsPushMessaging.registerEvent(HmsPushEvent.NOTIFICATION_OPENED_EVENT);
+}
 
 let backgroundMessageHandler;
 AppRegistry.registerHeadlessTask("HMSPushHeadlessTask", () => {
